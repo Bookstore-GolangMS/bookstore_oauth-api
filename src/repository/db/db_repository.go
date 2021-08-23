@@ -27,15 +27,8 @@ func NewRepository() DbRepository {
 }
 
 func (db *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.RestErr) {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return nil, errors.NewInternalServerError(err.Error())
-	}
-
-	defer session.Close()
-
 	var result access_token.AccessToken
-	if err := session.Query(queryGetAccessToken, id).Scan(&result.AccessToken,
+	if err := cassandra.GetSession().Query(queryGetAccessToken, id).Scan(&result.AccessToken,
 		&result.UserId, &result.ClientId, &result.Expires); err != nil {
 		if err == gocql.ErrNotFound {
 			return nil, errors.NewNotFoundError("no access token found with given id")
@@ -44,21 +37,11 @@ func (db *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.R
 		return nil, errors.NewInternalServerError(err.Error())
 	}
 
-	if err != nil {
-		panic(err)
-	}
-
 	return &result, nil
 }
 
 func (db *dbRepository) Create(at access_token.AccessToken) *errors.RestErr {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return errors.NewInternalServerError(err.Error())
-	}
-	defer session.Close()
-
-	if err := session.Query(queryCreateAccessToken,
+	if err := cassandra.GetSession().Query(queryCreateAccessToken,
 		at.AccessToken,
 		at.UserId,
 		at.ClientId,
@@ -71,13 +54,7 @@ func (db *dbRepository) Create(at access_token.AccessToken) *errors.RestErr {
 }
 
 func (db *dbRepository) UpdateExpirationTime(at access_token.AccessToken) *errors.RestErr {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return errors.NewInternalServerError(err.Error())
-	}
-	defer session.Close()
-
-	if err := session.Query(queryUpdateExpires,
+	if err := cassandra.GetSession().Query(queryUpdateExpires,
 		at.Expires,
 		at.AccessToken,
 	).Exec(); err != nil {

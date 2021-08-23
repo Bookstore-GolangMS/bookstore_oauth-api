@@ -7,8 +7,8 @@ import (
 
 type RestErr struct {
 	Message string `json:"message"`
-	Code    int    `json:"code"`
-	Error   string `json:"errors"`
+	Status  int    `json:"status"`
+	Error   string `json:"error"`
 }
 
 func NewError(msg string) error {
@@ -18,7 +18,7 @@ func NewError(msg string) error {
 func NewBadRequestError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Code:    http.StatusBadRequest,
+		Status:  http.StatusBadRequest,
 		Error:   "bad_request",
 	}
 }
@@ -26,7 +26,7 @@ func NewBadRequestError(message string) *RestErr {
 func NewNotFoundError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Code:    http.StatusNotFound,
+		Status:  http.StatusNotFound,
 		Error:   "not_found",
 	}
 }
@@ -34,7 +34,7 @@ func NewNotFoundError(message string) *RestErr {
 func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Code:    http.StatusInternalServerError,
+		Status:  http.StatusInternalServerError,
 		Error:   "internal_server_error",
 	}
 }

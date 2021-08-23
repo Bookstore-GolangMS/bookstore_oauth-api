@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/domain/access_token"
+	access_token_service "github.com/HunnTeRUS/bookstore_oauth-api/src/services/access_token"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/utils/errors"
 	"github.com/gin-gonic/gin"
 )
@@ -15,10 +16,10 @@ type AccessTokenHandler interface {
 }
 
 type accessTokenHandler struct {
-	service access_token.Service
+	service access_token_service.Service
 }
 
-func NewHandler(service access_token.Service) AccessTokenHandler {
+func NewHandler(service access_token_service.Service) AccessTokenHandler {
 	return &accessTokenHandler{
 		service: service,
 	}
@@ -28,7 +29,7 @@ func (h *accessTokenHandler) GetById(c *gin.Context) {
 	returned, err := h.service.GetById(c.Param("access_token_id"))
 
 	if err != nil {
-		c.JSON(err.Code, err)
+		c.JSON(err.Status, err)
 		return
 	}
 
@@ -36,15 +37,15 @@ func (h *accessTokenHandler) GetById(c *gin.Context) {
 }
 
 func (h *accessTokenHandler) Create(c *gin.Context) {
-	var at access_token.AccessToken
+	var at access_token.AccessTokenRequest
 
 	if err := c.ShouldBindJSON(&at); err != nil {
 		c.JSON(http.StatusBadRequest, errors.NewBadRequestError("invalid json body for create an access token"))
 		return
 	}
 
-	if err := h.service.Create(at); err != nil {
-		c.JSON(err.Code, err)
+	if _, err := h.service.Create(at); err != nil {
+		c.JSON(err.Status, err)
 		return
 	}
 
@@ -55,7 +56,7 @@ func (h *accessTokenHandler) UpdateExpirationTime(c *gin.Context) {
 	returned, err := h.service.GetById(c.Param("access_token_id"))
 
 	if err != nil {
-		c.JSON(err.Code, err)
+		c.JSON(err.Status, err)
 		return
 	}
 
