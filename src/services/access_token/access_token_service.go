@@ -3,11 +3,11 @@ package access_token_service
 import (
 	"strings"
 
+	"github.com/Bookstore-GolangMS/bookstore_utils-go/errors"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/domain/access_token"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/domain/users"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/repository/db"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/repository/rest"
-	"github.com/HunnTeRUS/bookstore_oauth-api/src/utils/errors"
 )
 
 type Service interface {

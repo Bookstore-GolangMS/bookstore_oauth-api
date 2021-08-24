@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/Bookstore-GolangMS/bookstore_utils-go/errors"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/domain/users"
-	"github.com/HunnTeRUS/bookstore_oauth-api/src/utils/errors"
 	"github.com/mercadolibre/golang-restclient/rest"
 )
 
@@ -35,21 +35,21 @@ func (userRest *usersRestRepository) LoginUser(email string, password string) (*
 	response := usersRestClient.Post("/users/login", request)
 
 	if response == nil || response.Response == nil {
-		return nil, errors.NewInternalServerError("invalid rest client response when trying to login user")
+		return nil, errors.NewInternalServerError("invalid rest client response when trying to login user", nil)
 	}
 
 	if response.StatusCode > 299 {
 		var restErr errors.RestErr
 		err := json.Unmarshal(response.Bytes(), &restErr)
 		if err != nil {
-			return nil, errors.NewInternalServerError("invalid error when trying to login user")
+			return nil, errors.NewInternalServerError("invalid error when trying to login user", err)
 		}
 		return nil, &restErr
 	}
 
 	var user users.User
 	if err := json.Unmarshal(response.Bytes(), &user); err != nil {
-		return nil, errors.NewInternalServerError("invalid error when trying to login user")
+		return nil, errors.NewInternalServerError("invalid error when trying to login user", err)
 	}
 
 	return &user, nil

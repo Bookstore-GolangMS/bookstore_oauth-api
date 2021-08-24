@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Bookstore-GolangMS/bookstore_utils-go/errors"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/utils/crypto_utils"
-	"github.com/HunnTeRUS/bookstore_oauth-api/src/utils/errors"
 )
 
 const (

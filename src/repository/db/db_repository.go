@@ -1,9 +1,9 @@
 package db
 
 import (
+	"github.com/Bookstore-GolangMS/bookstore_utils-go/errors"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/clients/cassandra"
 	"github.com/HunnTeRUS/bookstore_oauth-api/src/domain/access_token"
-	"github.com/HunnTeRUS/bookstore_oauth-api/src/utils/errors"
 	"github.com/gocql/gocql"
 )
 
@@ -34,7 +34,7 @@ func (db *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.R
 			return nil, errors.NewNotFoundError("no access token found with given id")
 		}
 
-		return nil, errors.NewInternalServerError(err.Error())
+		return nil, errors.NewInternalServerError(err.Error(), nil)
 	}
 
 	return &result, nil
@@ -47,7 +47,7 @@ func (db *dbRepository) Create(at access_token.AccessToken) *errors.RestErr {
 		at.ClientId,
 		at.Expires,
 	).Exec(); err != nil {
-		return errors.NewInternalServerError(err.Error())
+		return errors.NewInternalServerError(err.Error(), nil)
 	}
 
 	return nil
@@ -58,7 +58,7 @@ func (db *dbRepository) UpdateExpirationTime(at access_token.AccessToken) *error
 		at.Expires,
 		at.AccessToken,
 	).Exec(); err != nil {
-		return errors.NewInternalServerError(err.Error())
+		return errors.NewInternalServerError(err.Error(), nil)
 	}
 
 	return nil

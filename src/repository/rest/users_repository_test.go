@@ -37,7 +37,7 @@ func TestLoginUserTimeoutFromApi(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
+	assert.EqualValues(t, err.Code, http.StatusInternalServerError)
 	assert.EqualValues(t, "invalid rest client response when trying to login user", err.Message)
 }
 
@@ -57,7 +57,7 @@ func TestLoginUserInvalidErrorInterface(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
+	assert.EqualValues(t, err.Code, http.StatusInternalServerError)
 	assert.EqualValues(t, "invalid error when trying to login user", err.Message)
 }
 
@@ -77,7 +77,7 @@ func TestLoginUserInvalidLoginCredentials(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusNotFound)
+	assert.EqualValues(t, err.Code, http.StatusNotFound)
 	assert.EqualValues(t, "invalid user credentials", err.Message)
 }
 
@@ -97,7 +97,7 @@ func TestLoginUserInvalidUserJsonResponse(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
+	assert.EqualValues(t, err.Code, http.StatusInternalServerError)
 	assert.EqualValues(t, "invalid error when trying to login user", err.Message)
 }
 
