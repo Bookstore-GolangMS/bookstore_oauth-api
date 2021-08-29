@@ -29,7 +29,7 @@ func (h *accessTokenHandler) GetById(c *gin.Context) {
 	returned, err := h.service.GetById(c.Param("access_token_id"))
 
 	if err != nil {
-		c.JSON(err.Code, err)
+		c.JSON(err.Code(), err)
 		return
 	}
 
@@ -45,7 +45,7 @@ func (h *accessTokenHandler) Create(c *gin.Context) {
 	}
 
 	if _, err := h.service.Create(at); err != nil {
-		c.JSON(err.Code, err)
+		c.JSON(err.Code(), err)
 		return
 	}
 
@@ -56,7 +56,7 @@ func (h *accessTokenHandler) UpdateExpirationTime(c *gin.Context) {
 	returned, err := h.service.GetById(c.Param("access_token_id"))
 
 	if err != nil {
-		c.JSON(err.Code, err)
+		c.JSON(err.Code(), err)
 		return
 	}
 

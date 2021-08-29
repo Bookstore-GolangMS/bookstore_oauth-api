@@ -3,7 +3,7 @@ module github.com/HunnTeRUS/bookstore_oauth-api
 go 1.16
 
 require (
-	github.com/Bookstore-GolangMS/bookstore_utils-go v0.0.0-20210824001142-ddd48bb3910a
+	github.com/Bookstore-GolangMS/bookstore_utils-go v0.0.0-20210829204258-cbdaf59e3ccc
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/gocql/gocql v0.0.0-20210817081954-bc256bbb90de

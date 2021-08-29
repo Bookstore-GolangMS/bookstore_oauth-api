@@ -11,9 +11,9 @@ import (
 )
 
 type Service interface {
-	GetById(string) (*access_token.AccessToken, *errors.RestErr)
-	Create(access_token.AccessTokenRequest) (*access_token.AccessToken, *errors.RestErr)
-	UpdateExpirationTime(access_token.AccessToken) *errors.RestErr
+	GetById(string) (*access_token.AccessToken, errors.RestErr)
+	Create(access_token.AccessTokenRequest) (*access_token.AccessToken, errors.RestErr)
+	UpdateExpirationTime(access_token.AccessToken) errors.RestErr
 }
 
 type service struct {
@@ -28,7 +28,7 @@ func NewService(restUsersRepo rest.UsersRestRepository, dbRepo db.DbRepository) 
 	}
 }
 
-func (s *service) GetById(access_token_id string) (*access_token.AccessToken, *errors.RestErr) {
+func (s *service) GetById(access_token_id string) (*access_token.AccessToken, errors.RestErr) {
 	access_token_id = strings.TrimSpace(access_token_id)
 
 	if len(access_token_id) == 0 {
@@ -43,13 +43,13 @@ func (s *service) GetById(access_token_id string) (*access_token.AccessToken, *e
 	return access_token, nil
 }
 
-func (s *service) Create(request access_token.AccessTokenRequest) (*access_token.AccessToken, *errors.RestErr) {
+func (s *service) Create(request access_token.AccessTokenRequest) (*access_token.AccessToken, errors.RestErr) {
 	if err := request.Validate(); err != nil {
 		return nil, err
 	}
 
 	var user = &users.User{}
-	var err = &errors.RestErr{}
+	var err errors.RestErr
 
 	switch request.GrantType {
 	case access_token.GrantTypeClientCredentials:
@@ -74,7 +74,7 @@ func (s *service) Create(request access_token.AccessTokenRequest) (*access_token
 	return &at, nil
 }
 
-func (s *service) UpdateExpirationTime(access_token access_token.AccessToken) *errors.RestErr {
+func (s *service) UpdateExpirationTime(access_token access_token.AccessToken) errors.RestErr {
 	if err := access_token.Validate(); err != nil {
 		return err
 	}

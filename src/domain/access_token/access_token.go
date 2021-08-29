@@ -25,7 +25,7 @@ type AccessToken struct {
 	Expires     int64  `json:"expires"`
 }
 
-func (at *AccessToken) Validate() *errors.RestErr {
+func (at *AccessToken) Validate() errors.RestErr {
 	at.AccessToken = strings.TrimSpace(at.AccessToken)
 
 	if at.AccessToken == "" {
@@ -53,7 +53,7 @@ type AccessTokenRequest struct {
 	ClientSecret string `json:"client_secret"`
 }
 
-func (at *AccessTokenRequest) Validate() *errors.RestErr {
+func (at *AccessTokenRequest) Validate() errors.RestErr {
 	switch at.GrantType {
 	case GrantTypePassword:
 		return at.validatePasswordGrantType()
@@ -64,7 +64,7 @@ func (at *AccessTokenRequest) Validate() *errors.RestErr {
 	}
 }
 
-func (at *AccessTokenRequest) validatePasswordGrantType() *errors.RestErr {
+func (at *AccessTokenRequest) validatePasswordGrantType() errors.RestErr {
 	if strings.TrimSpace(at.Username) == "" {
 		return errors.NewBadRequestError("username can not be empty")
 	}
@@ -76,7 +76,7 @@ func (at *AccessTokenRequest) validatePasswordGrantType() *errors.RestErr {
 	return nil
 }
 
-func (at *AccessTokenRequest) validateClientGrantType() *errors.RestErr {
+func (at *AccessTokenRequest) validateClientGrantType() errors.RestErr {
 	if strings.TrimSpace(at.ClientId) == "" {
 		return errors.NewBadRequestError("client_id can not be empty")
 	}
